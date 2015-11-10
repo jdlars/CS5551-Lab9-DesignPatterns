@@ -1,0 +1,23 @@
+<ion-view view-title="{{brewery.brewery.name}}">
+  <ion-content>
+    <h1>{{brewery.brewery.name}}</h1>
+    <p>{{brewery.brewery.description}}</p>
+    <img ng-src="{{brewery.brewery.images.medium}}" alt="" />
+    <h2>Our beers</h2>
+    <table>
+      <tr>
+        <td>Name</td>
+        <td>Image</td>
+        <td>Style</td>
+        <td>ABV</td>
+        <td>Rating</td>
+      </tr>
+      <tr ng-repeat="beer in beers">
+        <td>{{beer.name}}</td>
+        <td>{{beer.style.name}}</td>
+
+      </tr>
+
+    </table>
+  </ion-content>
+</ion-view>
