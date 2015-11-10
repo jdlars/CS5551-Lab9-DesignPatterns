@@ -42,33 +42,33 @@ angular.module('starter.controllers', [])
   })
 
   .controller('BreweriesCtrl', function($scope, $http, BreweryPassingService) {
-    //var baseUrl = 'https://api.brewerydb.com/v2/';
-    //var breweryDBKey = '?key=fd038434276f4a9e7d6a19ee2d8aa5b5';
-    //$scope.breweries = [];
-    //
-    //$http.get(baseUrl + 'locations/' + breweryDBKey + '&locality=Kansas%20City').then(function (resp) {
-    //  console.log('Success', resp.data);
-    //
-    //  angular.forEach(resp.data.data, function(item) {
-    //    $scope.breweries.push(item);
-    //  });
-    //}, function(err) {
-    //  console.error('ERR', err);
-    //});
-    //
-    //$scope.passBreweryToBreweryView = function(brewery) {
-    //  $scope.BreweryPassingService = BreweryPassingService;
-    //  BreweryPassingService.selectedBrewery = brewery;
-    //}
-    //
-    //function getBreweryById($scope, id) {
-    //  $http.get('http://api.brewerydb.com/v2/brewery/' + id + '?key=fd038434276f4a9e7d6a19ee2d8aa5b5').then(function(resp) {
-    //    console.log('Success - Brewery with id ' + id, resp.data);
-    //    return resp.data
-    //  }, function(err) {
-    //    console.error('ERR', err);
-    //  });
-    //}
+    var baseUrl = 'https://api.brewerydb.com/v2/';
+    var breweryDBKey = '?key=fd038434276f4a9e7d6a19ee2d8aa5b5';
+    $scope.breweries = [];
+
+    $http.get(baseUrl + 'locations/' + breweryDBKey + '&locality=Kansas%20City').then(function (resp) {
+      console.log('Success', resp.data);
+
+      angular.forEach(resp.data.data, function(item) {
+        $scope.breweries.push(item);
+      });
+    }, function(err) {
+      console.error('ERR', err);
+    });
+
+    $scope.passBreweryToBreweryView = function(brewery) {
+      $scope.BreweryPassingService = BreweryPassingService;
+      BreweryPassingService.selectedBrewery = brewery;
+    }
+
+    function getBreweryById($scope, id) {
+      $http.get('http://api.brewerydb.com/v2/brewery/' + id + '?key=fd038434276f4a9e7d6a19ee2d8aa5b5').then(function(resp) {
+        console.log('Success - Brewery with id ' + id, resp.data);
+        return resp.data
+      }, function(err) {
+        console.error('ERR', err);
+      });
+    }
 
     function MainBrewery(brewery) {
       this.perform = function() {
@@ -122,12 +122,35 @@ angular.module('starter.controllers', [])
 
     build.test();
 
-    executeFlyweightExample();
 
-    function executeFlyweightExample() {
-      
-    }
   }
+
+    .factory('abstractRESTFactory', function ($http) {
+      function abstractFactory(url) {
+        this.url = url;
+      }
+
+      abstractFactory.prototype = {
+        getResults: function (url) {
+          return $http.get(this.url, {params:urlOptions});
+        },
+        get: function(id, urlOptions) {
+          return $http.get(this.url + '?' + id, {
+            params: urlOptions
+          });
+        },
+        update: function(id, object) {
+          return $http.put(this.url + id, data);
+        },
+        insert: function(object) {
+          return $http.post(this.url, data);
+        },
+        delete: function(id) {
+          return $http.delete(this.url + id);
+        }
+      };
+      return abstractFactory;
+    })
 
 
 
